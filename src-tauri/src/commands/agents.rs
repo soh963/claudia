@@ -1830,16 +1830,31 @@ pub async fn get_claude_binary_path(db: State<'_, AgentDb>) -> Result<Option<Str
 pub async fn set_claude_binary_path(db: State<'_, AgentDb>, path: String) -> Result<(), String> {
     let conn = db.0.lock().map_err(|e| e.to_string())?;
 
+    // Begin a transaction to ensure both settings are saved atomically
+    let tx = conn.unchecked_transaction()
+        .map_err(|e| format!("Failed to start transaction: {}", e))?;
+
     // Special handling for bundled sidecar reference
     if path == "claude-code" {
         // For bundled sidecar, we don't need to validate file existence
         // as it's handled by Tauri's sidecar system
-        conn.execute(
+        tx.execute(
             "INSERT INTO app_settings (key, value) VALUES ('claude_binary_path', ?1)
              ON CONFLICT(key) DO UPDATE SET value = ?1",
             params![path],
         )
         .map_err(|e| format!("Failed to save Claude binary path: {}", e))?;
+        
+        // Set preference to bundled
+        tx.execute(
+            "INSERT INTO app_settings (key, value) VALUES ('claude_installation_preference', 'bundled')
+             ON CONFLICT(key) DO UPDATE SET value = 'bundled'",
+            [],
+        )
+        .map_err(|e| format!("Failed to save installation preference: {}", e))?;
+        
+        tx.commit()
+            .map_err(|e| format!("Failed to commit transaction: {}", e))?;
         return Ok(());
     }
 
@@ -1861,13 +1876,24 @@ pub async fn set_claude_binary_path(db: State<'_, AgentDb>, path: String) -> Res
         }
     }
 
-    // Insert or update the setting
-    conn.execute(
+    // Insert or update the binary path setting
+    tx.execute(
         "INSERT INTO app_settings (key, value) VALUES ('claude_binary_path', ?1)
          ON CONFLICT(key) DO UPDATE SET value = ?1",
         params![path],
     )
     .map_err(|e| format!("Failed to save Claude binary path: {}", e))?;
+    
+    // Set preference to system since this is a system installation
+    tx.execute(
+        "INSERT INTO app_settings (key, value) VALUES ('claude_installation_preference', 'system')
+         ON CONFLICT(key) DO UPDATE SET value = 'system'",
+        [],
+    )
+    .map_err(|e| format!("Failed to save installation preference: {}", e))?;
+    
+    tx.commit()
+        .map_err(|e| format!("Failed to commit transaction: {}", e))?;
 
     Ok(())
 }

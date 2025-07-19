@@ -186,6 +186,7 @@ const FloatingPromptInputInner = (
   const [cursorPosition, setCursorPosition] = useState(0);
   const [embeddedImages, setEmbeddedImages] = useState<string[]>([]);
   const [dragActive, setDragActive] = useState(false);
+  const [isComposing, setIsComposing] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const expandedTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -611,7 +612,8 @@ const FloatingPromptInputInner = (
       return;
     }
 
-    if (e.key === "Enter" && !e.shiftKey && !isExpanded && !showFilePicker && !showSlashCommandPicker) {
+    // Prevent Enter key during IME composition (for Korean, Chinese, Japanese input)
+    if (e.key === "Enter" && !e.shiftKey && !isExpanded && !showFilePicker && !showSlashCommandPicker && !isComposing) {
       e.preventDefault();
       handleSend();
     }
@@ -672,6 +674,20 @@ const FloatingPromptInputInner = (
     e.preventDefault();
     e.stopPropagation();
     // File processing is handled by Tauri's onDragDropEvent
+  };
+
+  // Handle IME composition events for Korean, Chinese, Japanese input
+  const handleCompositionStart = () => {
+    console.log('[FloatingPromptInput] Composition started');
+    setIsComposing(true);
+  };
+
+  const handleCompositionEnd = (e: React.CompositionEvent<HTMLTextAreaElement>) => {
+    console.log('[FloatingPromptInput] Composition ended:', e.data);
+    setIsComposing(false);
+    // Update the text value after composition
+    const newValue = e.currentTarget.value;
+    setPrompt(newValue);
   };
 
   const handleRemoveImage = (index: number) => {
@@ -758,6 +774,8 @@ const FloatingPromptInputInner = (
                 value={prompt}
                 onChange={handleTextChange}
                 onPaste={handlePaste}
+                onCompositionStart={handleCompositionStart}
+                onCompositionEnd={handleCompositionEnd}
                 placeholder="Type your prompt here..."
                 className="min-h-[200px] resize-none"
                 disabled={disabled}
@@ -1001,6 +1019,8 @@ const FloatingPromptInputInner = (
                   onChange={handleTextChange}
                   onKeyDown={handleKeyDown}
                   onPaste={handlePaste}
+                  onCompositionStart={handleCompositionStart}
+                  onCompositionEnd={handleCompositionEnd}
                   placeholder={dragActive ? "Drop images here..." : "Ask Claude anything..."}
                   disabled={disabled}
                   className={cn(

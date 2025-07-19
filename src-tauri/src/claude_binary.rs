@@ -77,15 +77,18 @@ pub fn find_claude_binary(app_handle: &tauri::AppHandle) -> Result<String, Strin
                 if preference == "bundled" && is_sidecar_available(app_handle) {
                     info!("Using bundled Claude Code sidecar per user preference");
                     return Ok("claude-code".to_string());
+                } else if preference == "system" {
+                    info!("User prefers system installation, skipping bundled sidecar check");
+                    // Continue to system installation discovery below
                 }
             }
         }
-    }
-
-    // Check for bundled sidecar (if no preference or bundled preferred)
-    if is_sidecar_available(app_handle) {
-        info!("Found bundled Claude Code sidecar");
-        return Ok("claude-code".to_string());
+    } else {
+        // No preference set, check for bundled sidecar first
+        if is_sidecar_available(app_handle) {
+            info!("No preference set, found bundled Claude Code sidecar");
+            return Ok("claude-code".to_string());
+        }
     }
 
     // Discover all available system installations
