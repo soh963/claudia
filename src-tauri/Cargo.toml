@@ -12,6 +12,9 @@ edition = "2021"
 name = "claudia"
 path = "src/main.rs"
 
+[package.metadata.tauri]
+windows-subsystem = "windows"
+
 [lib]
 name = "claudia_lib"
 crate-type = ["lib", "cdylib", "staticlib"]

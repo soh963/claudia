@@ -25,22 +25,36 @@ resourceMonitor.startMonitoring(120000);
   }
 })();
 
+const AppWithProviders = () => {
+  const app = (
+    <ErrorBoundary>
+      <AnalyticsErrorBoundary>
+        <App />
+      </AnalyticsErrorBoundary>
+    </ErrorBoundary>
+  );
+
+  // Only wrap with PostHogProvider if API key is provided and PostHog is not disabled
+  if (import.meta.env.VITE_PUBLIC_POSTHOG_KEY && import.meta.env.VITE_DISABLE_POSTHOG !== 'true') {
+    return (
+      <PostHogProvider
+        apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
+        options={{
+          api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
+          capture_exceptions: true,
+          debug: import.meta.env.MODE === "development",
+        }}
+      >
+        {app}
+      </PostHogProvider>
+    );
+  }
+
+  return app;
+};
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <PostHogProvider
-      apiKey={import.meta.env.VITE_PUBLIC_POSTHOG_KEY}
-      options={{
-        api_host: import.meta.env.VITE_PUBLIC_POSTHOG_HOST,
-        defaults: '2025-05-24',
-        capture_exceptions: true,
-        debug: import.meta.env.MODE === "development",
-      }}
-    >
-      <ErrorBoundary>
-        <AnalyticsErrorBoundary>
-          <App />
-        </AnalyticsErrorBoundary>
-      </ErrorBoundary>
-    </PostHogProvider>
+    <AppWithProviders />
   </React.StrictMode>,
 );

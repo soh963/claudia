@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "identifier": "claudia.asterisk.so",
   "build": {
-    "beforeDevCommand": "bun run dev",
+    "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "bun run build",
+    "beforeBuildCommand": "npm run build",
     "frontendDist": "../dist"
   },
   "app": {
@@ -58,17 +58,15 @@
   "bundle": {
     "active": true,
     "targets": [
-      "deb",
-      "rpm",
-      "appimage",
-      "app",
-      "dmg"
+      "msi",
+      "nsis"
     ],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
       "icons/128x128@2x.png",
-      "icons/icon.icns"
+      "icons/icon.icns",
+      "icons/icon.ico"
     ],
     "resources": [],
     "externalBin": [],
@@ -91,6 +89,11 @@
       "signingIdentity": null,
       "providerShortName": null,
       "entitlements": "entitlements.plist"
+    },
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
     }
   }
 }
