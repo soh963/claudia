@@ -32,30 +32,35 @@ https://github.com/user-attachments/assets/bf0bdf9d-ba91-45af-9ac4-7274f57075cf
 
 Think of Claudia as your command center for Claude Code - bridging the gap between the command-line tool and a visual experience that makes AI-assisted development more intuitive and productive.
 
+## 🚀 What's New (v0.1.0)
+
+### 🎯 Key Features & Improvements
+
+- **🪟 Background Process Execution**: Claude processes now run silently in the background on Windows - no more console windows popping up
+- **🎨 Modern UI/UX**: Complete redesign with Tailwind CSS v4 and shadcn/ui components
+- **📦 Windows Installers**: Native MSI and NSIS installers for easy distribution
+- **🔧 Improved Claude Binary Detection**: Enhanced support for various installation methods (NVM, Homebrew, system paths)
+- **📊 Optional Analytics**: PostHog integration is now completely optional and disabled by default
+- **🎯 Better Error Handling**: Improved error messages and recovery mechanisms throughout the application
+
 ## 📋 Table of Contents
 
 - [🌟 Overview](#-overview)
+- [🚀 What's New](#-whats-new-v010)
 - [✨ Features](#-features)
   - [🗂️ Project & Session Management](#️-project--session-management)
   - [🤖 CC Agents](#-cc-agents)
-  
   - [📊 Usage Analytics Dashboard](#-usage-analytics-dashboard)
   - [🔌 MCP Server Management](#-mcp-server-management)
   - [⏰ Timeline & Checkpoints](#-timeline--checkpoints)
   - [📝 CLAUDE.md Management](#-claudemd-management)
 - [📖 Usage](#-usage)
-  - [Getting Started](#getting-started)
-  - [Managing Projects](#managing-projects)
-  - [Creating Agents](#creating-agents)
-  - [Tracking Usage](#tracking-usage)
-  - [Working with MCP Servers](#working-with-mcp-servers)
 - [🚀 Installation](#-installation)
 - [🔨 Build from Source](#-build-from-source)
 - [🛠️ Development](#️-development)
 - [🔒 Security](#-security)
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
-- [🙏 Acknowledgments](#-acknowledgments)
 
 ## ✨ Features
 
@@ -64,26 +69,29 @@ Think of Claudia as your command center for Claude Code - bridging the gap betwe
 - **Session History**: View and resume past coding sessions with full context
 - **Smart Search**: Find projects and sessions quickly with built-in search
 - **Session Insights**: See first messages, timestamps, and session metadata at a glance
+- **Todo Integration**: Built-in todo management that syncs with Claude Code sessions
 
 ### 🤖 **CC Agents**
 - **Custom AI Agents**: Create specialized agents with custom system prompts and behaviors
 - **Agent Library**: Build a collection of purpose-built agents for different tasks
 - **Background Execution**: Run agents in separate processes for non-blocking operations
 - **Execution History**: Track all agent runs with detailed logs and performance metrics
-
-
+- **Model Selection**: Choose between available Claude models for each agent
+- **Permission Control**: Configure file read/write and network access per agent
 
 ### 📊 **Usage Analytics Dashboard**
 - **Cost Tracking**: Monitor your Claude API usage and costs in real-time
 - **Token Analytics**: Detailed breakdown by model, project, and time period
 - **Visual Charts**: Beautiful charts showing usage trends and patterns
 - **Export Data**: Export usage data for accounting and analysis
+- **Resource Monitoring**: Track system resource usage during Claude sessions
 
 ### 🔌 **MCP Server Management**
 - **Server Registry**: Manage Model Context Protocol servers from a central UI
 - **Easy Configuration**: Add servers via UI or import from existing configs
 - **Connection Testing**: Verify server connectivity before use
 - **Claude Desktop Import**: Import server configurations from Claude Desktop
+- **Server Status**: Real-time monitoring of MCP server status
 
 ### ⏰ **Timeline & Checkpoints**
 - **Session Versioning**: Create checkpoints at any point in your coding session
@@ -97,6 +105,14 @@ Think of Claudia as your command center for Claude Code - bridging the gap betwe
 - **Live Preview**: See your markdown rendered in real-time
 - **Project Scanner**: Find all CLAUDE.md files in your projects
 - **Syntax Highlighting**: Full markdown support with syntax highlighting
+- **Template System**: Pre-built templates for common project structures
+
+### 🎨 **User Interface**
+- **Dark/Light Mode**: Automatic theme switching based on system preferences
+- **Responsive Design**: Works seamlessly on different screen sizes
+- **Keyboard Shortcuts**: Extensive keyboard navigation support
+- **Customizable Layout**: Arrange panels and tabs to your preference
+- **Native Performance**: Built with Tauri for optimal performance
 
 ## 📖 Usage
 
@@ -105,6 +121,7 @@ Think of Claudia as your command center for Claude Code - bridging the gap betwe
 1. **Launch Claudia**: Open the application after installation
 2. **Welcome Screen**: Choose between CC Agents or Projects
 3. **First Time Setup**: Claudia will automatically detect your `~/.claude` directory
+4. **Configure Settings**: Set your preferred model, theme, and other preferences
 
 ### Managing Projects
 
@@ -115,6 +132,7 @@ Projects → Select Project → View Sessions → Resume or Start New
 - Click on any project to view its sessions
 - Each session shows the first message and timestamp
 - Resume sessions directly or start new ones
+- Create checkpoints to save your progress
 
 ### Creating Agents
 
@@ -135,7 +153,8 @@ Menu → Usage Dashboard → View Analytics
 
 - Monitor costs by model, project, and date
 - Export data for reports
-- Set up usage alerts (coming soon)
+- View token usage breakdowns
+- Track resource consumption
 
 ### Working with MCP Servers
 
@@ -146,191 +165,104 @@ Menu → MCP Manager → Add Server → Configure
 - Add servers manually or via JSON
 - Import from Claude Desktop configuration
 - Test connections before using
+- Monitor server status in real-time
 
 ## 🚀 Installation
+
+### Windows
+
+#### Option 1: MSI Installer (Recommended)
+Download the latest `.msi` installer from the [Releases](https://github.com/getAsterisk/claudia/releases) page and run it.
+
+#### Option 2: NSIS Installer
+Download the `.exe` installer for a more customizable installation experience.
+
+### macOS
+
+Download the `.dmg` file from the [Releases](https://github.com/getAsterisk/claudia/releases) page and drag Claudia to your Applications folder.
+
+### Linux
+
+#### AppImage (Universal)
+Download the `.AppImage` file, make it executable, and run:
+```bash
+chmod +x Claudia-*.AppImage
+./Claudia-*.AppImage
+```
+
+#### Debian/Ubuntu
+```bash
+sudo dpkg -i claudia_*.deb
+```
 
 ### Prerequisites
 
 - **Claude Code CLI**: Install from [Claude's official site](https://claude.ai/code)
-
-### Release Executables Will Be Published Soon
+- **System Requirements**:
+  - Windows 10/11, macOS 11+, or Linux (Ubuntu 20.04+)
+  - 4GB RAM minimum (8GB recommended)
+  - 500MB available storage
 
 ## 🔨 Build from Source
 
 ### Prerequisites
 
-Before building Claudia from source, ensure you have the following installed:
-
-#### System Requirements
-
-- **Operating System**: Windows 10/11, macOS 11+, or Linux (Ubuntu 20.04+)
-- **RAM**: Minimum 4GB (8GB recommended)
-- **Storage**: At least 1GB free space
-
-#### Required Tools
-
 1. **Rust** (1.70.0 or later)
    ```bash
-   # Install via rustup
    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
    ```
 
 2. **Bun** (latest version)
    ```bash
-   # Install bun
    curl -fsSL https://bun.sh/install | bash
    ```
 
-3. **Git**
+3. **Platform-specific dependencies**:
+   
+   **Windows**: 
+   - Microsoft C++ Build Tools
+   - WebView2 (usually pre-installed)
+   
+   **Linux**:
    ```bash
-   # Usually pre-installed, but if not:
-   # Ubuntu/Debian: sudo apt install git
-   # macOS: brew install git
-   # Windows: Download from https://git-scm.com
+   sudo apt install libwebkit2gtk-4.1-dev libgtk-3-dev libayatana-appindicator3-dev
    ```
-
-4. **Claude Code CLI**
-   - Download and install from [Claude's official site](https://claude.ai/code)
-   - Ensure `claude` is available in your PATH
-
-#### Platform-Specific Dependencies
-
-**Linux (Ubuntu/Debian)**
-```bash
-# Install system dependencies
-sudo apt update
-sudo apt install -y \
-  libwebkit2gtk-4.1-dev \
-  libgtk-3-dev \
-  libayatana-appindicator3-dev \
-  librsvg2-dev \
-  patchelf \
-  build-essential \
-  curl \
-  wget \
-  file \
-  libssl-dev \
-  libxdo-dev \
-  libsoup-3.0-dev \
-  libjavascriptcoregtk-4.1-dev
-```
-
-**macOS**
-```bash
-# Install Xcode Command Line Tools
-xcode-select --install
-
-# Install additional dependencies via Homebrew (optional)
-brew install pkg-config
-```
-
-**Windows**
-- Install [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
-- Install [WebView2](https://developer.microsoft.com/microsoft-edge/webview2/) (usually pre-installed on Windows 11)
+   
+   **macOS**:
+   ```bash
+   xcode-select --install
+   ```
 
 ### Build Steps
 
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/getAsterisk/claudia.git
-   cd claudia
-   ```
-
-2. **Install Frontend Dependencies**
-   ```bash
-   bun install
-   ```
-
-3. **Build the Application**
-   
-   **For Development (with hot reload)**
-   ```bash
-   bun run tauri dev
-   ```
-   
-   **For Production Build**
-   ```bash
-   # Build the application
-   bun run tauri build
-   
-   # The built executable will be in:
-   # - Linux: src-tauri/target/release/
-   # - macOS: src-tauri/target/release/
-   # - Windows: src-tauri/target/release/
-   ```
-
-4. **Platform-Specific Build Options**
-   
-   **Debug Build (faster compilation, larger binary)**
-   ```bash
-   bun run tauri build --debug
-   ```
-   
-   **Universal Binary for macOS (Intel + Apple Silicon)**
-   ```bash
-   bun run tauri build --target universal-apple-darwin
-   ```
-
-### Troubleshooting
-
-#### Common Issues
-
-1. **"cargo not found" error**
-   - Ensure Rust is installed and `~/.cargo/bin` is in your PATH
-   - Run `source ~/.cargo/env` or restart your terminal
-
-2. **Linux: "webkit2gtk not found" error**
-   - Install the webkit2gtk development packages listed above
-   - On newer Ubuntu versions, you might need `libwebkit2gtk-4.0-dev`
-
-3. **Windows: "MSVC not found" error**
-   - Install Visual Studio Build Tools with C++ support
-   - Restart your terminal after installation
-
-4. **"claude command not found" error**
-   - Ensure Claude Code CLI is installed and in your PATH
-   - Test with `claude --version`
-
-5. **Build fails with "out of memory"**
-   - Try building with fewer parallel jobs: `cargo build -j 2`
-   - Close other applications to free up RAM
-
-#### Verify Your Build
-
-After building, you can verify the application works:
-
 ```bash
-# Run the built executable directly
-# Linux/macOS
-./src-tauri/target/release/claudia
+# Clone the repository
+git clone https://github.com/getAsterisk/claudia.git
+cd claudia
 
-# Windows
-./src-tauri/target/release/claudia.exe
+# Install dependencies
+bun install
+
+# Development build with hot reload
+bun run tauri dev
+
+# Production build
+bun run tauri build
 ```
 
-### Build Artifacts
-
-The build process creates several artifacts:
-
-- **Executable**: The main Claudia application
-- **Installers** (when using `tauri build`):
-  - `.deb` package (Linux)
-  - `.AppImage` (Linux)
-  - `.dmg` installer (macOS)
-  - `.msi` installer (Windows)
-  - `.exe` installer (Windows)
-
-All artifacts are located in `src-tauri/target/release/`.
+The built executables will be in `src-tauri/target/release/bundle/`.
 
 ## 🛠️ Development
 
 ### Tech Stack
 
 - **Frontend**: React 18 + TypeScript + Vite 6
-- **Backend**: Rust with Tauri 2
+- **Backend**: Rust with Tauri 2.5
 - **UI Framework**: Tailwind CSS v4 + shadcn/ui
 - **Database**: SQLite (via rusqlite)
 - **Package Manager**: Bun
+- **State Management**: React Context + Hooks
+- **IPC**: Tauri Commands + Events
 
 ### Project Structure
 
@@ -338,15 +270,18 @@ All artifacts are located in `src-tauri/target/release/`.
 claudia/
 ├── src/                   # React frontend
 │   ├── components/        # UI components
-│   ├── lib/               # API client & utilities
-│   └── assets/            # Static assets
-├── src-tauri/             # Rust backend
+│   ├── lib/              # API client & utilities
+│   ├── hooks/            # Custom React hooks
+│   └── assets/           # Static assets
+├── src-tauri/            # Rust backend
 │   ├── src/
-│   │   ├── commands/      # Tauri command handlers
-│   │   ├── checkpoint/    # Timeline management
-│   │   └── process/       # Process management
-│   └── tests/             # Rust test suite
-└── public/                # Public assets
+│   │   ├── commands/     # Tauri command handlers
+│   │   ├── checkpoint/   # Timeline management
+│   │   ├── process/      # Process management
+│   │   └── claude_binary.rs # Claude detection
+│   ├── icons/            # Application icons
+│   └── tests/            # Rust test suite
+└── public/               # Public assets
 ```
 
 ### Development Commands
@@ -359,24 +294,37 @@ bun run tauri dev
 bun run dev
 
 # Type checking
-bunx tsc --noEmit
+bun run check
+
+# Build for production
+bun run tauri build
 
 # Run Rust tests
 cd src-tauri && cargo test
 
-# Format code
+# Format Rust code
 cd src-tauri && cargo fmt
 ```
+
+### Key Components
+
+- **ClaudeCodeSession**: Main session management component
+- **CCAgents**: Agent creation and management
+- **UsageDashboard**: Analytics and cost tracking
+- **MCPManager**: MCP server configuration
+- **TimelineView**: Checkpoint visualization
+- **FloatingPromptInput**: Command input interface
 
 ## 🔒 Security
 
 Claudia prioritizes your privacy and security:
 
-1. **Process Isolation**: Agents run in separate processes
-2. **Permission Control**: Configure file and network access per agent
-3. **Local Storage**: All data stays on your machine
-4. **No Telemetry**: No data collection or tracking
-5. **Open Source**: Full transparency through open source code
+1. **Process Isolation**: Agents run in separate processes with controlled permissions
+2. **No Console Windows**: Background processes run silently without exposing terminals
+3. **Local Storage**: All data stays on your machine in SQLite databases
+4. **No Telemetry**: Analytics are completely optional and disabled by default
+5. **Permission Control**: Granular file and network access configuration
+6. **Open Source**: Full transparency through open source code
 
 ## 🤝 Contributing
 
@@ -390,29 +338,41 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 - 🎨 UI/UX enhancements
 - 🧪 Test coverage
 - 🌐 Internationalization
+- 🔧 Performance optimizations
+
+### Development Setup
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## 📄 License
 
-This project is licensed under the AGPL License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the AGPL-3.0 License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
 - Built with [Tauri](https://tauri.app/) - The secure framework for building desktop apps
+- UI components from [shadcn/ui](https://ui.shadcn.com/)
 - [Claude](https://claude.ai) by Anthropic
+- Icons from [Lucide](https://lucide.dev/)
 
 ---
 
 <div align="center">
   <p>
-    <strong>Made with ❤️ by the <a href="https://asterisk.so/">Asterisk</a></strong>
+    <strong>Made with ❤️ by <a href="https://asterisk.so/">Asterisk</a></strong>
   </p>
   <p>
     <a href="https://github.com/getAsterisk/claudia/issues">Report Bug</a>
     ·
     <a href="https://github.com/getAsterisk/claudia/issues">Request Feature</a>
+    ·
+    <a href="https://discord.gg/G9g25nj9">Join Discord</a>
   </p>
 </div>
-
 
 ## Star History
 
